@@ -1,21 +1,36 @@
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 
-import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
+import { Image, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, Platform, Alert} from "react-native";
 import { Link } from "expo-router";
+import { useState } from "react";
 
 export default function Index(){
-    return(
+    const [email, setEmail] = useState("");
+    function handleSignIn(){
+        console.log(email)
+        Alert.alert("Entrar", "Preencha e-mail e senha para entrar!")
+    }    return(
+        <KeyboardAvoidingView
+            style={{flex:1}}
+            behavior={Platform.select({ios:"padding", android:"height"})}
+        >
         <ScrollView contentContainerStyle={{ flexGrow:1 }}>
             <View style={styles.container}>
                 <Image 
-                    source={require('@/assets/image1.png')}
+                    source={require('@/assets/image1.gif')}
                     style={styles.ilustration} 
                 />
+                <Text style={styles.title}>Entrar {email}</Text>
+                <Text style={styles.subtitle}>Faça seu login</Text>
                 <View style={styles.form}>
-                    <Input placeholder="E-mail" keyboardType="email-address" />
+                    <Input placeholder="E-mail" 
+                        keyboardType="email-address"
+                        // onChangeText={(text) => console.log(text)}
+                        onChangeText={setEmail}
+                        />
                     <Input placeholder="Senha" secureTextEntry/>
-                    <Button label="Entrar" />
+                    <Button label="Entrar" onPress={handleSignIn} />
                     {/* <Button label="Entrar" style={{ backgroundColor: "green"}}/> */}
                 </View>
                 <Text style={styles.footerText}>Não tem uma conta? 
@@ -25,6 +40,7 @@ export default function Index(){
                 </Text>
             </View>
         </ScrollView>
+        </KeyboardAvoidingView>
     )
 } 
 
@@ -52,5 +68,13 @@ const styles = StyleSheet.create({
     form: {
         marginTop:24,
         gap:12
+    },
+    title:{
+        fontSize:32,
+        fontWeight: 900,
+        color:"#505050ff"
+    },
+    subtitle:{
+        fontSize:16,
     }
 })
