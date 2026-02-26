@@ -1,10 +1,25 @@
-import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import { Input } from "@/components/Input";
 
-import { Image, StyleSheet, Text, View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { Link } from "expo-router";
+import { useState } from "react";
+import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Signup(){
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmaSenha, setConfirmaSenha] = useState("");
+
+    function handleEntrar(){
+        console.log(senha)
+        if (senha !== confirmaSenha) {
+        Alert.alert("Erro", "As senhas não conferem!");
+    }   else {
+        Alert.alert("Sucesso", "Logado com sucesso!");
+    }
+}
+
     return(
         <KeyboardAvoidingView
             style={{flex:1}}
@@ -19,11 +34,24 @@ export default function Signup(){
                 <Text style={styles.title}>Cadastrar</Text>
                 <Text style={styles.subtitle}>Crie sua conta aqui</Text>
                 <View style={styles.form}>
-                    <Input placeholder="Nome" />
-                    <Input placeholder="E-mail" keyboardType="email-address" />
-                    <Input placeholder="Senha" secureTextEntry/>
-                    <Input placeholder="Confirmar Senha" secureTextEntry/>
-                    <Button label="Cadastrar" />
+                    <Input placeholder="Nome" 
+                        onChangeText={setNome}
+                    />
+                    <Input placeholder="E-mail" 
+                        keyboardType="email-address"
+                        onChangeText={setEmail}
+
+                    />
+                    <Input placeholder="Senha" 
+                        secureTextEntry
+                        onChangeText={setSenha}
+                    />
+                    <Input placeholder="Confirmar Senha" 
+                        secureTextEntry
+                        onChangeText={setConfirmaSenha}
+                    />
+
+                    <Button label="Cadastrar" onPress={handleEntrar}/>
                     {/* <Button label="Entrar" style={{ backgroundColor: "green"}}/> */}
                 </View>
                 <Text style={styles.footerText}>Já possui cadastro?
