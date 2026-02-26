@@ -12,10 +12,10 @@ export default function Signup(){
     const [confirmaSenha, setConfirmaSenha] = useState("");
 
     function handleEntrar(){
-        console.log(senha)
         if (senha !== confirmaSenha) {
         Alert.alert("Erro", "As senhas não conferem!");
-    }   else {
+    }   
+        else {
         Alert.alert("Sucesso", "Logado com sucesso!");
     }
 }
