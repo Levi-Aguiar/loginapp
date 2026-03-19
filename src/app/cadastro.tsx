@@ -16,82 +16,77 @@ import {
 } from 'react-native';
 
 import {
-    onAuthStateChanged, signInWithEmailAndPassword, signOut
+    createUserWithEmailAndPassword,
+    onAuthStateChanged
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
-type Note = {id: string, text: string};
-
-export default function App() {
+export default function cadastro() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
   // Auth form
   const [email, setEmail] = useState("");
   const [password, setPassword]= useState("");
+  const [confirmaSenha, setConfirmaSenha] = useState("")
 
-  useEffect( () =>{
+   useEffect( () =>{
     const unsub = onAuthStateChanged(auth, (u) => {
       setUserEmail(u?.email ?? null);
     });
     return unsub;
   },[])
 
-  async function handleLOGIN() {
+  async function handleRegister(){
     try {
-      console.log("Login --> ", email.trim());
-      const logged = await signInWithEmailAndPassword(auth, email.trim(), password);
-      console.log("LOGIN OK uid: ", logged.user.email);
-      Alert.alert("Login Ok ", logged.user.email ?? "")
+      console.log("Register -> ", email.trim());
+      const create = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      console.log("Register Ok uid: ", create.user.uid);
+      Alert.alert("Conta criada com sucesso", create.user.email ?? "");
     } catch (error) {
-      console.log("Login failed ", error);
+      console.log("Register failed", error);      
     }
   }
 
-  async function handleLogout(){
-    try {
-      console.log("LOGOUT !!!");
-      await signOut(auth);
-      console.log("LOGOUT OK");
-      Alert.alert("Logout Ok!");
-    } catch (error) {
-      console.log("Login failed ", error);
-    }
-  }
- 
     return(
         <KeyboardAvoidingView
             style={{flex:1}}
             behavior={Platform.select({ios:"padding", android:"height"})}
         >
-        <ScrollView 
-            contentContainerStyle={{ flexGrow:1 }}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-            >
+        <ScrollView contentContainerStyle={{ flexGrow:1 }}>
             <View style={styles.container}>
                 <Image 
-                    source={require('@/assets/image1.gif')}
-                    style={styles.ilustration} 
+                    source={require('@/assets/Cad.gif')}
+                    style={styles.ilustration}
                 />
-                <Text style={styles.title}>Entrar</Text>
-                <Text style={styles.subtitle}>Faça seu login</Text>
+                <Text style={styles.title}>Cadastrar</Text>
+                <Text style={styles.subtitle}>Crie sua conta aqui</Text>
                 <View style={styles.form}>
-                    <Input placeholder="E-mail" 
-                        keyboardType="email-address"
-                        // onChangeText={(text) => console.log(text)}
-                        onChangeText={setEmail}
-                        />
-                    <Input placeholder="Senha" 
-                        secureTextEntry
-                        onChangeText={setPassword}
-                        />
-                        
-                    <Button label="Entrar" onPress={handleLOGIN} />
+                    <Input 
+                    placeholder="E-mail"
+                    keyboardType="email-address"
+                    value={email} // ✅ adiciona isso
+                    onChangeText={setEmail}
+                    />
+
+                    <Input 
+                    placeholder="Senha"
+                    secureTextEntry
+                    value={password} // ✅
+                    onChangeText={setPassword}
+                    />
+
+                    <Input 
+                    placeholder="Confirmar Senha"
+                    secureTextEntry
+                    value={confirmaSenha} // ✅
+                    onChangeText={setConfirmaSenha}
+                    />
+                    <Button label="Cadastrar" onPress={handleRegister}/>
                     {/* <Button label="Entrar" style={{ backgroundColor: "green"}}/> */}
                 </View>
-                <Text style={styles.footerText}>Não tem uma conta? 
-                    <Link href="/cadastro" style={styles.footerLink}>
-                        {" "}Cadastre-se aqui
+                <Text style={styles.footerText}>Já possui cadastro?
+                    <Link href="/login" style={styles.footerLink}>
+                        {" "}Voltar ao menu
                     </Link>
                 </Text>
             </View>
@@ -119,7 +114,7 @@ const styles = StyleSheet.create({
     },
     footerLink:{
         color:"#0929b8",
-        fontWeight:"700"
+        fontWeight:700
     },
     form: {
         marginTop:24,

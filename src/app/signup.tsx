@@ -2,43 +2,23 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 
 import { Link } from "expo-router";
-
 import { useState } from "react";
-import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    Text,
-    View
-} from 'react-native';
+import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 
-import {
-    signInWithEmailAndPassword
-} from "firebase/auth";
-import { auth } from "./src/lib/firebase";
+export default function Signup(){
+    const [nome, setNome] = useState("");
+    const [email, setEmail] = useState("");
+    const [senha, setSenha] = useState("");
+    const [confirmaSenha, setConfirmaSenha] = useState("");
 
-
-type Note = {id: string, text: string};
-
-export default function App() {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-
-  // Auth form
-  const [email, setEmail] = useState("fjsilva@sp.senac.br");
-  const [password, setPassword]= useState("a1b2c3");
-
-  async function handleLOGIN() {
-    try {
-      console.log("Login --> ", email.trim());
-      const logged = await signInWithEmailAndPassword(auth, email.trim(), password);
-      console.log("LOGIN OK uid: ", logged.user.email);
-      Alert.alert("Login Ok ", logged.user.email ?? "")
-    } catch (error) {
-      console.log("Login failed ", error);
+    function handleEntrar(){
+        if (senha !== confirmaSenha) {
+        Alert.alert("Erro", "As senhas não conferem!");
+    }   
+        else {
+        Alert.alert("Sucesso", "Logado com sucesso!");
     }
-  }
-
+}
 
     return(
         <KeyboardAvoidingView

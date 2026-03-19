@@ -1,11 +1,14 @@
-import { StyleSheet, TextInput, TextInputProps } from "react-native"
-export function Input({...rest}:TextInputProps){
-    return(
-        <TextInput 
-         style={styles.input} {...rest} />
-    )
-}
+import { StyleSheet, TextInput } from "react-native";
 
+export function Input({ onChangeText, value, ...rest }) {
+  return (
+    <TextInput
+      value={value}
+      onChangeText={onChangeText}
+      {...rest}
+    />
+  );
+}
 const styles = StyleSheet.create({
     input:{
         width: "100%",
