@@ -20,8 +20,6 @@ import {
 } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
-type Note = {id: string, text: string};
-
 export default function App() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
@@ -36,7 +34,7 @@ export default function App() {
     return unsub;
   },[])
 
-  async function handleLOGIN() {
+  async function handleLogin() {
     try {
       console.log("Login --> ", email.trim());
       const logged = await signInWithEmailAndPassword(auth, email.trim(), password);
@@ -86,8 +84,9 @@ export default function App() {
                         onChangeText={setPassword}
                         />
                         
-                    <Button label="Entrar" onPress={handleLOGIN} />
+                    <Button label="Entrar" onPress={handleLogin} />
                     {/* <Button label="Entrar" style={{ backgroundColor: "green"}}/> */}
+                    <Button label="Sair" onPress={handleLogout} />
                 </View>
                 <Text style={styles.footerText}>Não tem uma conta? 
                     <Link href="/cadastro" style={styles.footerLink}>
